@@ -20,6 +20,16 @@ function slugFromRouteParam(slugParam) {
   }
 }
 
+function normalizeForMatch(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[_\s]+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 export default function DisorderDetail() {
   const { slug: slugParam } = useParams();
   const slug = useMemo(() => slugFromRouteParam(slugParam), [slugParam]);
@@ -32,8 +42,12 @@ export default function DisorderDetail() {
       if (direct?.length) return direct;
 
       const list = await base44.entities.Disorder.list();
-      const want = slug.toLowerCase();
-      const match = list.filter((d) => (d.slug && d.slug.toLowerCase() === want));
+      const want = normalizeForMatch(slug);
+      const match = list.filter((d) => {
+        const slugMatch = normalizeForMatch(d?.slug) === want;
+        const nameMatch = normalizeForMatch(d?.name) === want;
+        return slugMatch || nameMatch;
+      });
       return match;
     },
   });

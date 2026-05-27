@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, ArrowDown } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { base44 } from '@/api/base44Client';
 
-const conditions = [
+const fallbackConditions = [
   { label: 'Schizophrenia', slug: 'schizophrenia' },
   { label: 'Schizoaffective', slug: 'schizoaffective-disorder' },
   { label: 'Depression', slug: 'major-depression' },
@@ -14,6 +16,39 @@ const conditions = [
 ];
 
 export default function HeroSection() {
+  const { data: disorders = [] } = useQuery({
+    queryKey: ['hero-disorders'],
+    queryFn: async () => {
+      const rows = await base44.entities.Disorder.list();
+      return Array.isArray(rows) ? rows : [];
+    },
+  });
+
+  const preferredOrder = [
+    'schizophrenia',
+    'schizoaffective-disorder',
+    'major-depression',
+    'generalized-anxiety',
+    'panic-disorder',
+    'adhd',
+    'social-anxiety',
+  ];
+
+  const bySlug = new Map(
+    disorders
+      .filter((d) => d?.slug && d?.name)
+      .map((d) => [String(d.slug).toLowerCase(), { label: d.name, slug: d.slug }])
+  );
+
+  const orderedLiveConditions = [
+    ...preferredOrder.map((slug) => bySlug.get(slug)).filter(Boolean),
+    ...Array.from(bySlug.values()).filter(
+      (d) => !preferredOrder.includes(String(d.slug).toLowerCase())
+    ),
+  ].slice(0, 7);
+
+  const conditions = orderedLiveConditions.length > 0 ? orderedLiveConditions : fallbackConditions;
+
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Ambient background */}
