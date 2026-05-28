@@ -47,7 +47,14 @@ export default function HeroSection() {
     ),
   ].slice(0, 7);
 
-  const conditions = orderedLiveConditions.length > 0 ? orderedLiveConditions : fallbackConditions;
+  // Keep a stable set of 7 chips: use live rows first, then fill with fallback entries.
+  const liveSlugs = new Set(
+    orderedLiveConditions.map((c) => String(c.slug).toLowerCase())
+  );
+  const fallbackFill = fallbackConditions.filter(
+    (c) => !liveSlugs.has(String(c.slug).toLowerCase())
+  );
+  const conditions = [...orderedLiveConditions, ...fallbackFill].slice(0, 7);
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
