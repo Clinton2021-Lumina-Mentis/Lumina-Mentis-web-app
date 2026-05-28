@@ -10,6 +10,7 @@ import ExpandableSection from '../components/shared/ExpandableSection';
 import ConsultBanner from '../components/shared/ConsultBanner';
 import BookmarkButton from '../components/shared/BookmarkButton';
 import SubPageHeader from '../components/layout/SubPageHeader';
+import { enrichDisorderContent } from '@/lib/disorderContentFallbacks';
 
 function slugFromRouteParam(slugParam) {
   if (!slugParam) return '';
@@ -52,7 +53,7 @@ export default function DisorderDetail() {
     },
   });
 
-  const disorder = disorders[0];
+  const disorder = useMemo(() => enrichDisorderContent(disorders[0]), [disorders]);
 
   useEffect(() => {
     if (disorder?.name) {
