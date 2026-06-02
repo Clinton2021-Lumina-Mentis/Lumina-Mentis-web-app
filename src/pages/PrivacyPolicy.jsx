@@ -181,7 +181,7 @@ export default function PrivacyPolicy() {
             </p>
             <div className="mt-3 p-4 rounded-xl bg-muted/40 border border-border/50">
               <p className="font-medium text-foreground">Lumina Mentis</p>
-              <p>Email: <a href="mailto:privacy@luminamentis.com" className="text-primary hover:underline">privacy@luminamentis.com</a></p>
+              <p>Email: <a href="mailto:privacy@lumina-mentis.org" className="text-primary hover:underline">privacy@lumina-mentis.org</a></p>
             </div>
           </Section>
 
