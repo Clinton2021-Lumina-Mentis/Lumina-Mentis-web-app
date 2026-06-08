@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
 import {
   MessageSquare, ChevronUp, UserPlus, UserMinus,
-  Edit2, Check, X, Mail, Trash2, MapPin, Globe, Hash
+  Edit2, Check, X, Mail, Trash2, MapPin, Globe
 } from 'lucide-react';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,

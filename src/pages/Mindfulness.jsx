@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wind, ChevronLeft, Clock, RefreshCw, Leaf } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import BreathingSession from '@/components/mindfulness/BreathingSession';
 
 const PATTERNS = [

@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Clock, Eye, Layers, BarChart2, Trash2 } from 'lucide-react';
-import { format, subDays } from 'date-fns';
+import { format } from 'date-fns';
 import { getAnalyticsData, clearAnalyticsData } from '@/lib/analytics-tracker';
 import { Button } from '@/components/ui/button';
 import MetricCard from '../components/analytics/MetricCard';

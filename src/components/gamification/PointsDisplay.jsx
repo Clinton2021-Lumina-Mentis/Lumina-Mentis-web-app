@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Trophy, TrendingUp } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 
 export default function PointsDisplay({ userPoints, showDetails = false }) {
   if (!userPoints) return null;

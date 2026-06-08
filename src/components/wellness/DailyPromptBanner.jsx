@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, CheckCircle2, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const today = () => new Date().toISOString().split('T')[0];

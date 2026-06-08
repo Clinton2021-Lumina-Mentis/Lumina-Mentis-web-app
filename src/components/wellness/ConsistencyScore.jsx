@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Award, TrendingUp, TrendingDown, Minus, ChevronRight } from 'lucide-react';
+import { Award, ChevronRight } from 'lucide-react';
 
 /**
  * Calculates a 0-100 consistency score from active goals.
