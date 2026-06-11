@@ -447,7 +447,7 @@ create policy "owner admin write forum_thread" on public.forum_thread for all us
 create policy "public read forum_reply" on public.forum_reply for select using (true);
 create policy "owner admin write forum_reply" on public.forum_reply for all using (author_email = auth.email() or public.is_admin()) with check (author_email = auth.email() or public.is_admin());
 
-create policy "read own profile or admin" on public.user_profile for select using (user_email = auth.email() or public.is_admin() or true);
+create policy "read own profile or admin" on public.user_profile for select using (user_email = auth.email() or public.is_admin());
 create policy "write own profile or admin" on public.user_profile for all using (user_email = auth.email() or public.is_admin()) with check (user_email = auth.email() or public.is_admin());
 
 create policy "dm participants only" on public.direct_message for select using (sender_email = auth.email() or recipient_email = auth.email());
@@ -476,12 +476,84 @@ create policy "reward_log own write/read or admin" on public.reward_log for all 
 create policy "achievement own read admin write" on public.user_achievement for select using (user_email = auth.email() or public.is_admin());
 create policy "achievement admin write" on public.user_achievement for all using (public.is_admin()) with check (public.is_admin());
 
-create policy "public read support_group" on public.support_group for select using (true);
-create policy "owner admin write support_group" on public.support_group for all using (created_by = auth.email() or public.is_admin()) with check (created_by = auth.email() or public.is_admin());
-create policy "group_message read" on public.group_message for select using (true);
-create policy "group_message write sender/admin" on public.group_message for all using (sender_email = auth.email() or public.is_admin()) with check (sender_email = auth.email() or public.is_admin());
-create policy "group_session read" on public.group_session for select using (true);
-create policy "group_session write facilitator/admin" on public.group_session for all using (facilitator_email = auth.email() or public.is_admin()) with check (facilitator_email = auth.email() or public.is_admin());
+create policy "support_group member read" on public.support_group
+for select
+using (
+  public.is_admin()
+  or created_by = auth.email()
+  or facilitator_email = auth.email()
+  or member_emails ? auth.email()
+);
+
+create policy "owner admin write support_group" on public.support_group
+for all
+using (created_by = auth.email() or public.is_admin())
+with check (created_by = auth.email() or public.is_admin());
+
+create policy "group_message member read" on public.group_message
+for select
+using (
+  public.is_admin()
+  or exists (
+    select 1
+    from public.support_group sg
+    where sg.id = group_message.group_id
+      and (
+        sg.created_by = auth.email()
+        or sg.facilitator_email = auth.email()
+        or sg.member_emails ? auth.email()
+      )
+  )
+);
+
+create policy "group_message insert member sender/admin" on public.group_message
+for insert
+with check (
+  public.is_admin()
+  or (
+    sender_email = auth.email()
+    and exists (
+      select 1
+      from public.support_group sg
+      where sg.id = group_message.group_id
+        and (
+          sg.created_by = auth.email()
+          or sg.facilitator_email = auth.email()
+          or sg.member_emails ? auth.email()
+        )
+    )
+  )
+);
+
+create policy "group_message update sender/admin" on public.group_message
+for update
+using (public.is_admin() or sender_email = auth.email())
+with check (public.is_admin() or sender_email = auth.email());
+
+create policy "group_message delete sender/admin" on public.group_message
+for delete
+using (public.is_admin() or sender_email = auth.email());
+
+create policy "group_session member read" on public.group_session
+for select
+using (
+  public.is_admin()
+  or exists (
+    select 1
+    from public.support_group sg
+    where sg.id = group_session.group_id
+      and (
+        sg.created_by = auth.email()
+        or sg.facilitator_email = auth.email()
+        or sg.member_emails ? auth.email()
+      )
+  )
+);
+
+create policy "group_session write facilitator/admin" on public.group_session
+for all
+using (facilitator_email = auth.email() or public.is_admin())
+with check (facilitator_email = auth.email() or public.is_admin());
 
 create policy "public read wellness_circle" on public.wellness_circle for select using (true);
 create policy "creator admin write wellness_circle" on public.wellness_circle for all using (created_by = auth.email() or public.is_admin()) with check (created_by = auth.email() or public.is_admin());

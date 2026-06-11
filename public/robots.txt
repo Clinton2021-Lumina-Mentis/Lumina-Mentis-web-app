@@ -28,4 +28,4 @@ Disallow: /professional/
 Crawl-delay: 1
 
 # Sitemap
-Sitemap: https://luminamentis.com/sitemap.xml
+Sitemap: https://lumina-mentis.org/sitemap.xml

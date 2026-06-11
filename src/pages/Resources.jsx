@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ExternalLink, BookOpen, Wind, LifeBuoy, Search, ArrowUpRight, Clock, Heart } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 
 // ─── Static data ────────────────────────────────────────────────
 const ARTICLES = [

@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Flame, Zap, Rocket, MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Heart, Flame, Zap, Rocket } from 'lucide-react';
 
 const POST_ICONS = {
   progress_update: '📍',

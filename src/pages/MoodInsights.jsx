@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid,
-  PolarAngleAxis, LineChart, Line, XAxis, YAxis, CartesianGrid,
+  PolarAngleAxis, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, PolarRadiusAxis, Legend
 } from 'recharts';
 import { TrendingUp, Brain, Calendar, Flame, Smile, Zap, BookOpen, ArrowLeft, Tag } from 'lucide-react';

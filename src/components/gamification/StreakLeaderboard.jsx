@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Flame, Medal } from 'lucide-react';
+import { Flame } from 'lucide-react';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Users, TrendingUp, Activity, UserCheck } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';

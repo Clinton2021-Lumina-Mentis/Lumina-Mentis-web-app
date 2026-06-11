@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import NotificationPanel from './NotificationPanel';
 
 export default function NotificationBell({ currentUser }) {
