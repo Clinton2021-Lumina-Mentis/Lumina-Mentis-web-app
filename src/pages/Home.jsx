@@ -5,7 +5,6 @@ import WellnessDashboard from '../components/dashboard/WellnessDashboard';
 import ConsultBanner from '../components/shared/ConsultBanner';
 import AIRecommendations from '../components/home/AIRecommendations';
 import DailyAffirmation from '../components/home/DailyAffirmation';
-import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (

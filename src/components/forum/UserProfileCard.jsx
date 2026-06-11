@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { UserPlus, UserMinus, MessageSquare, ChevronUp, ExternalLink, Mail } from 'lucide-react';
 import { base44 } from '@/api/base44Client';

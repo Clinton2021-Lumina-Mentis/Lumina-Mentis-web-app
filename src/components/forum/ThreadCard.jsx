@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MessageSquare, ChevronUp, Pin, Lock, Eye, EyeOff, PinOff } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns';
 
 const tagColors = {

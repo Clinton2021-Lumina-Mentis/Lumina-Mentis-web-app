@@ -3,7 +3,6 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Wind, Music, ShieldAlert, Star, Layers } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import MeditationPlayer from '../components/toolbox/MeditationPlayer';
 import BreathingExercise from '../components/toolbox/BreathingExercise';
 import CrisisPlanEditor from '../components/toolbox/CrisisPlanEditor';

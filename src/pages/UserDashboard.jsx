@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   BookOpen, Target, Flame, Bookmark, TrendingUp,
-  Smile, Zap, CheckCircle2, ArrowRight, Brain, Calendar
+  Smile, Zap, ArrowRight, Brain, Calendar
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +13,7 @@ import MoodTrendChart from '@/components/journal/MoodTrendChart';
 import WellnessStreakChart from '@/components/dashboard/WellnessStreakChart';
 import MoodDistributionChart from '@/components/dashboard/MoodDistributionChart';
 import InsightCard from '@/components/dashboard/InsightCard';
-import { format, subDays, isToday, parseISO } from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 const today = () => new Date().toISOString().split('T')[0];
 

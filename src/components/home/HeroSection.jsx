@@ -47,7 +47,11 @@ export default function HeroSection() {
     ),
   ].slice(0, 7);
 
-  const conditions = orderedLiveConditions.length > 0 ? orderedLiveConditions : fallbackConditions;
+  // Only link to disorders that actually exist in the database to avoid dead
+  // "Condition Not Found" links. Fall back to the static chips only when the DB
+  // returned nothing (e.g. still loading or unseeded), so the hero is never empty.
+  const conditions =
+    orderedLiveConditions.length > 0 ? orderedLiveConditions : fallbackConditions;
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">

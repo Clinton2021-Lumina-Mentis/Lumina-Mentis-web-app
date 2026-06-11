@@ -131,7 +131,7 @@ export default function TermsOfService() {
             <p>If you have any questions about these Terms of Service, please contact us at:</p>
             <div className="mt-3 p-4 rounded-xl bg-muted/40 border border-border/50">
               <p className="font-medium text-foreground">Lumina Mentis</p>
-              <p>Email: <a href="mailto:legal@luminamentis.com" className="text-primary hover:underline">legal@luminamentis.com</a></p>
+              <p>Email: <a href="mailto:legal@lumina-mentis.org" className="text-primary hover:underline">legal@lumina-mentis.org</a></p>
             </div>
           </Section>
 

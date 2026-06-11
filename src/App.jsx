@@ -6,6 +6,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import GuestOrLoginPrompt from '@/components/auth/GuestOrLoginPrompt';
+import SeoCanonical from '@/components/SeoCanonical';
 import { base44 } from '@/api/base44Client';
 import AppLayout from './components/layout/AppLayout';
 import Home from './pages/Home';
@@ -128,6 +129,7 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
+          <SeoCanonical />
           <AuthenticatedApp />
         </Router>
         <Toaster />

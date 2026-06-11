@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Circle, Flame, Pencil, Trash2, ToggleLeft, ToggleRight, Trophy } from 'lucide-react';
+import { CheckCircle2, Circle, Flame, Pencil, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 

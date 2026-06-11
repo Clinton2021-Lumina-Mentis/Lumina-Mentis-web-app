@@ -10,6 +10,7 @@ import ExpandableSection from '../components/shared/ExpandableSection';
 import ConsultBanner from '../components/shared/ConsultBanner';
 import BookmarkButton from '../components/shared/BookmarkButton';
 import SubPageHeader from '../components/layout/SubPageHeader';
+import { enrichDisorderContent } from '@/lib/disorderContentFallbacks';
 
 function slugFromRouteParam(slugParam) {
   if (!slugParam) return '';
@@ -52,7 +53,36 @@ export default function DisorderDetail() {
     },
   });
 
-  const disorder = disorders[0];
+  const disorder = useMemo(() => enrichDisorderContent(disorders[0]), [disorders]);
+
+  // Full library list (shared cache with the Disorders page) used to resolve
+  // related-condition names to their detail-page slugs.
+  const { data: allDisorders = [] } = useQuery({
+    queryKey: ['disorders'],
+    queryFn: () => base44.entities.Disorder.list(),
+  });
+
+  const slugByKey = useMemo(() => {
+    const map = new Map();
+    const add = (key, value) => {
+      if (key && !map.has(key)) map.set(key, value);
+    };
+    allDisorders.forEach((d) => {
+      if (!d?.slug) return;
+      add(normalizeForMatch(d.slug), d.slug);
+      add(normalizeForMatch(d.name), d.slug);
+      // Also index the name without any parenthetical (e.g. "(PTSD)") so
+      // references that omit the abbreviation still resolve.
+      add(normalizeForMatch(String(d.name || '').replace(/\([^)]*\)/g, '')), d.slug);
+    });
+    return map;
+  }, [allDisorders]);
+
+  const resolveRelatedSlug = (name) => {
+    const direct = slugByKey.get(normalizeForMatch(name));
+    if (direct) return direct;
+    return slugByKey.get(normalizeForMatch(String(name || '').replace(/\([^)]*\)/g, '')));
+  };
 
   useEffect(() => {
     if (disorder?.name) {
@@ -319,15 +349,18 @@ export default function DisorderDetail() {
                 Related Conditions
               </h3>
               <div className="flex flex-wrap gap-2">
-                {disorder.related_disorders.map((name, i) => (
-                  <Link
-                    key={i}
-                    to="/disorders"
-                    className="px-4 py-2 rounded-full border border-border/60 text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all"
-                  >
-                    {name}
-                  </Link>
-                ))}
+                {disorder.related_disorders.map((name, i) => {
+                  const relatedSlug = resolveRelatedSlug(name);
+                  return (
+                    <Link
+                      key={i}
+                      to={relatedSlug ? `/disorders/${encodeURIComponent(relatedSlug)}` : '/disorders'}
+                      className="px-4 py-2 rounded-full border border-border/60 text-sm text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all"
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}

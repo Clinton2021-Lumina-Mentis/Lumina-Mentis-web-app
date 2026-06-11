@@ -6,7 +6,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Send, Users, Calendar, Plus, Lock, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { formatDistanceToNow, format } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import GroupSessionCard from '../components/groups/GroupSessionCard';
 import ScheduleSessionForm from '../components/groups/ScheduleSessionForm';
 import SubPageHeader from '../components/layout/SubPageHeader';

@@ -125,7 +125,16 @@ Return ONLY valid JSON (no markdown, no explanation) matching this schema:
 }
       `.trim();
 
-      const result = await base44.integrations.Core.InvokeLLM({
+      const invokeLLM = base44?.integrations?.Core?.InvokeLLM;
+      if (typeof invokeLLM !== 'function') {
+        // Integration may be unavailable in some environments; fail soft.
+        setMoodSummary('');
+        setRecommendations([]);
+        setLoaded(true);
+        return;
+      }
+
+      const result = await invokeLLM({
         prompt: contextPrompt,
         response_json_schema: {
           type: 'object',
