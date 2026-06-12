@@ -34,8 +34,7 @@ There are no automated test suites in this repository (no Jest, Vitest, or simil
 
 ### Caveats
 
-- The codebase has pre-existing unused-import lint errors (~55). These are not regressions.
-- `npm run lint` exits non-zero due to these pre-existing errors; use `npm run lint 2>&1 | grep -c error` to count if checking for regressions.
+- `npm run lint` (runs `eslint . --quiet`, errors only) currently passes with exit code 0. Plain `eslint .` reports ~15 pre-existing unused-var **warnings** (no errors); these are not regressions.
 - The `typecheck` script (`tsc -p ./jsconfig.json`) is defined in package.json but TypeScript is not fully configured (the project is JavaScript/JSX).
 ### Overview
 
