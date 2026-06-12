@@ -34,8 +34,10 @@ There are no automated test suites in this repository (no Jest, Vitest, or simil
 
 ### Caveats
 
+- `npm run lint` currently passes cleanly (exit 0, no errors) on a fresh checkout.
 - `npm run lint` (runs `eslint . --quiet`, errors only) currently passes with exit code 0. Plain `eslint .` reports ~15 pre-existing unused-var **warnings** (no errors); these are not regressions.
 - The `typecheck` script (`tsc -p ./jsconfig.json`) is defined in package.json but TypeScript is not fully configured (the project is JavaScript/JSX).
+- A valid `.env.local` (or placeholder values) must exist before running `npm run dev`/`npm run build`; without it the Supabase client logs a missing-env error but the UI still renders in guest mode.
 ### Overview
 
 Lumina Mentis is a React SPA (Vite + React 18 + Tailwind CSS + shadcn/ui) with Supabase as the backend (auth, database, realtime, storage). There is no local backend server to run — all backend services are hosted by Supabase.
