@@ -22,6 +22,8 @@ The app requires a `.env.local` with at minimum:
 
 Without valid Supabase credentials the UI renders but all data fetches and auth flows fail. Placeholder values allow the dev server to start and the build to succeed.
 
+In Cursor Cloud these are provided as injected secrets (env vars `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`). Vite reads `VITE_`-prefixed process env vars directly, so a `.env.local` is not strictly required when the secrets are set — though writing them into `.env.local` also works. The connected Supabase project already has `supabase/schema.sql` and seed data applied (e.g. the `disorder` table has ~10 rows), so read-only flows return real data in guest mode. Login still uses magic-link email / Google OAuth, which can't be completed headlessly.
+
 ### Lint / Build / Test
 
 | Task | Command | Notes |
