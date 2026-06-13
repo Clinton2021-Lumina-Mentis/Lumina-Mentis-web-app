@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import {
   AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid,
   PolarAngleAxis, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, PolarRadiusAxis, Legend
+  Tooltip, ResponsiveContainer, PolarRadiusAxis
 } from 'recharts';
 import { TrendingUp, Brain, Calendar, Flame, Smile, Zap, BookOpen, ArrowLeft, Tag } from 'lucide-react';
 import { MOODS } from '@/components/journal/MoodPicker';
