@@ -40,6 +40,7 @@ import Resources from './pages/Resources';
 import AffirmationGallery from './pages/AffirmationGallery';
 import MoodInsights from './pages/MoodInsights';
 import TermsOfService from './pages/TermsOfService';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin, isAuthenticated } = useAuth();
@@ -133,6 +134,7 @@ function App() {
           <AuthenticatedApp />
         </Router>
         <Toaster />
+        <SpeedInsights />
       </QueryClientProvider>
     </AuthProvider>
   )
