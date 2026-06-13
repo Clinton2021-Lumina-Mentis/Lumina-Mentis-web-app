@@ -15,6 +15,7 @@ import {
 import NotificationBell from '@/components/notifications/NotificationBell';
 import NavSearch from './NavSearch';
 import NavTooltip from './NavTooltip';
+import { useQueryClient } from '@tanstack/react-query';
 
 const primaryLinks = [
   { label: 'Home', path: '/', description: 'Your dashboard & overview', color: 'bg-primary' },
@@ -47,6 +48,55 @@ export default function Navbar({ sanctuaryMode, onToggleSanctuary, guestBanner }
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const location = useLocation();
   const isGuest = sessionStorage.getItem('lumina_guest') === 'true';
+
+  const queryClient = useQueryClient();
+
+  const handlePrefetch = (path) => {
+    if (isGuest) return;
+    
+    if (path === '/disorders' || path === '/root-causes' || path === '/remedies') {
+      queryClient.prefetchQuery({
+        queryKey: ['disorders'],
+        queryFn: () => base44.entities.Disorder.list(),
+        staleTime: 5 * 60 * 1000,
+      });
+    } else if (path === '/forum') {
+      queryClient.prefetchQuery({
+        queryKey: ['forum-threads'],
+        queryFn: () => base44.entities.ForumThread.list('-created_date', 100),
+        staleTime: 60 * 1000,
+      });
+    } else if (path === '/groups') {
+      queryClient.prefetchQuery({
+        queryKey: ['support-groups'],
+        queryFn: () => base44.entities.SupportGroup.list('-created_date', 100),
+        staleTime: 60 * 1000,
+      });
+    } else if (path === '/wellness' && currentUser?.email) {
+      queryClient.prefetchQuery({
+        queryKey: ['wellness-goals', currentUser.email],
+        queryFn: () => base44.entities.WellnessGoal.filter({ user_email: currentUser.email }),
+        staleTime: 60 * 1000,
+      });
+      queryClient.prefetchQuery({
+        queryKey: ['user-points', currentUser.email],
+        queryFn: () => base44.entities.UserPoints.filter({ user_email: currentUser.email }).then(results => results[0] || null),
+        staleTime: 60 * 1000,
+      });
+    } else if (path === '/journal' && currentUser?.email) {
+      queryClient.prefetchQuery({
+        queryKey: ['journal-entries', currentUser.email],
+        queryFn: () => base44.entities.JournalEntry.filter({ user_email: currentUser.email }, '-date', 60),
+        staleTime: 60 * 1000,
+      });
+    } else if (path === '/saved' && currentUser?.email) {
+      queryClient.prefetchQuery({
+        queryKey: ['saved-resources', currentUser.email],
+        queryFn: () => base44.entities.SavedResource.filter({ user_email: currentUser.email }, '-created_date'),
+        staleTime: 60 * 1000,
+      });
+    }
+  };
 
   useEffect(() => {
     base44.auth.me().then(async (user) => {
@@ -107,6 +157,8 @@ export default function Navbar({ sanctuaryMode, onToggleSanctuary, guestBanner }
                   <NavTooltip key={link.path} label={link.label} description={link.description} color={link.color}>
                     <Link
                       to={link.path}
+                      onMouseEnter={() => handlePrefetch(link.path)}
+                      onFocus={() => handlePrefetch(link.path)}
                       className={`relative px-2.5 py-1.5 text-xs font-medium rounded-lg transition-all duration-300 whitespace-nowrap ${
                         isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
                       }`}
@@ -138,7 +190,12 @@ export default function Navbar({ sanctuaryMode, onToggleSanctuary, guestBanner }
                 <DropdownMenuContent align="center">
                   {moreLinks.map(link => (
                     <DropdownMenuItem key={link.path} asChild>
-                      <Link to={link.path} className={location.pathname === link.path ? 'text-primary' : ''}>
+                      <Link
+                        to={link.path}
+                        onMouseEnter={() => handlePrefetch(link.path)}
+                        onFocus={() => handlePrefetch(link.path)}
+                        className={location.pathname === link.path ? 'text-primary' : ''}
+                      >
                         {link.label}
                       </Link>
                     </DropdownMenuItem>
@@ -294,24 +351,26 @@ export default function Navbar({ sanctuaryMode, onToggleSanctuary, guestBanner }
           >
             <div className="px-6 py-4 space-y-1">
               {navLinks.map((link) => (
-  <Link
-    key={link.path}
-    to={link.path}
-    onClick={() => setMobileOpen(false)}
-    className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-      location.pathname === link.path
-        ? 'bg-primary/10 text-primary'
-        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-    }`}
-  >
-    {link.label}
-    {link.description && (
-      <span className="block text-xs text-muted-foreground font-normal mt-0.5">
-        {link.description}
-      </span>
-    )}
-  </Link>
-))}
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onMouseEnter={() => handlePrefetch(link.path)}
+                  onFocus={() => handlePrefetch(link.path)}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                    location.pathname === link.path
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  }`}
+                >
+                  {link.label}
+                  {link.description && (
+                    <span className="block text-xs text-muted-foreground font-normal mt-0.5">
+                      {link.description}
+                    </span>
+                  )}
+                </Link>
+              ))}
             </div>
           </motion.div>
         )}
