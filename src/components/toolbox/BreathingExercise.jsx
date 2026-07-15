@@ -21,7 +21,6 @@ export default function BreathingExercise({ exercise, onClose }) {
           const nextIndex = (phaseIndex + 1) % exercise.phases.length;
           setPhaseIndex(nextIndex);
           if (nextIndex === 0) setCycles(c => c + 1);
-          setSecondsLeft(exercise.phases[nextIndex].duration);
           return exercise.phases[nextIndex].duration;
         }
         return s - 1;

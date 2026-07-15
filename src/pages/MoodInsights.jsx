@@ -231,8 +231,8 @@ export default function MoodInsights() {
                 </AreaChart>
               </ResponsiveContainer>
               <div className="flex gap-4 mt-2 justify-end">
-                <Legend item={{ color: 'hsl(210,50%,60%)', label: 'Mood' }} />
-                <Legend item={{ color: 'hsl(280,30%,65%)', label: 'Energy' }} />
+                <CustomLegendItem item={{ color: 'hsl(210,50%,60%)', value: 'Mood' }} />
+                <CustomLegendItem item={{ color: 'hsl(280,30%,65%)', value: 'Energy' }} />
               </div>
             </ChartCard>
 

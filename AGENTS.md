@@ -22,6 +22,8 @@ The app requires a `.env.local` with at minimum:
 
 Without valid Supabase credentials the UI renders but all data fetches and auth flows fail. Placeholder values allow the dev server to start and the build to succeed.
 
+In Cursor Cloud these are provided as injected secrets (env vars `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`). Vite reads `VITE_`-prefixed process env vars directly, so a `.env.local` is not strictly required when the secrets are set — though writing them into `.env.local` also works. The connected Supabase project already has `supabase/schema.sql` and seed data applied (e.g. the `disorder` table has ~10 rows), so read-only flows return real data in guest mode. Login still uses magic-link email / Google OAuth, which can't be completed headlessly.
+
 ### Lint / Build / Test
 
 | Task | Command | Notes |
@@ -34,9 +36,10 @@ There are no automated test suites in this repository (no Jest, Vitest, or simil
 
 ### Caveats
 
-- The codebase has pre-existing unused-import lint errors (~55). These are not regressions.
-- `npm run lint` exits non-zero due to these pre-existing errors; use `npm run lint 2>&1 | grep -c error` to count if checking for regressions.
+- `npm run lint` currently passes cleanly (exit 0, no errors) on a fresh checkout.
+- `npm run lint` (runs `eslint . --quiet`, errors only) currently passes with exit code 0. Plain `eslint .` reports ~15 pre-existing unused-var **warnings** (no errors); these are not regressions.
 - The `typecheck` script (`tsc -p ./jsconfig.json`) is defined in package.json but TypeScript is not fully configured (the project is JavaScript/JSX).
+- A valid `.env.local` (or placeholder values) must exist before running `npm run dev`/`npm run build`; without it the Supabase client logs a missing-env error but the UI still renders in guest mode.
 ### Overview
 
 Lumina Mentis is a React SPA (Vite + React 18 + Tailwind CSS + shadcn/ui) with Supabase as the backend (auth, database, realtime, storage). There is no local backend server to run — all backend services are hosted by Supabase.
