@@ -18,6 +18,9 @@ export const AuthProvider = ({ children }) => {
       setUser(nextUser);
       setIsAuthenticated(!!nextUser);
       setAuthChecked(true);
+      // Clear any auth error that was set before the session was established
+      // (e.g. PKCE code exchange completing after the initial auth check).
+      if (nextUser) setAuthError(null);
     }) || { data: { subscription: null } };
 
     return () => {
