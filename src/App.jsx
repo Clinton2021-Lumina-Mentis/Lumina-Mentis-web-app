@@ -40,6 +40,7 @@ import Resources from './pages/Resources';
 import AffirmationGallery from './pages/AffirmationGallery';
 import MoodInsights from './pages/MoodInsights';
 import TermsOfService from './pages/TermsOfService';
+import AuthCallback from './pages/AuthCallback';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 
 const AuthenticatedApp = () => {
@@ -49,6 +50,9 @@ const AuthenticatedApp = () => {
   const path = window.location.pathname;
   if (path === '/privacy') return <PrivacyPolicy />;
   if (path === '/terms') return <TermsOfService />;
+  // OAuth callback — must render before any auth guard so the Supabase client
+  // can exchange the code and redirect the user to home.
+  if (path === '/auth/callback') return <AuthCallback />;
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -71,7 +75,7 @@ const AuthenticatedApp = () => {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
       const navigateToSignup = () => base44.auth.redirectToLogin(window.location.href + '?signup=true');
-      const navigateToGoogle = () => base44.auth.signInWithGoogle(window.location.href);
+      const navigateToGoogle = () => base44.auth.signInWithGoogle();
       return <GuestOrLoginPrompt onGuest={() => { sessionStorage.setItem('lumina_guest', 'true'); window.location.reload(); }} onLogin={navigateToLogin} onSignup={navigateToSignup} onGoogle={navigateToGoogle} />;
     }
   }
@@ -80,7 +84,7 @@ const AuthenticatedApp = () => {
   const isGuest = sessionStorage.getItem('lumina_guest') === 'true';
   if (!isAuthenticated && !isGuest) {
     const navigateToSignup = () => base44.auth.redirectToLogin(window.location.href + '?signup=true');
-    const navigateToGoogle = () => base44.auth.signInWithGoogle(window.location.href);
+    const navigateToGoogle = () => base44.auth.signInWithGoogle();
     return <GuestOrLoginPrompt onGuest={() => { sessionStorage.setItem('lumina_guest', 'true'); window.location.reload(); }} onLogin={navigateToLogin} onSignup={navigateToSignup} onGoogle={navigateToGoogle} />;
   }
 
@@ -118,6 +122,7 @@ const AuthenticatedApp = () => {
         <Route path="affirmations" element={<AffirmationGallery />} />
         <Route path="insights" element={<MoodInsights />} />
       </Route>
+      <Route path="auth/callback" element={<AuthCallback />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

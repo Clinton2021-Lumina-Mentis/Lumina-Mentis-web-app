@@ -312,11 +312,11 @@ export const base44 = {
       throwIfError(error);
       window.alert('Check your email for a magic sign-in link.');
     },
-    async signInWithGoogle(redirectTo = window.location.href) {
+    async signInWithGoogle() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo,
+          redirectTo: `${window.location.origin}/auth/callback`,
           queryParams: {
             prompt: 'select_account'
           }
